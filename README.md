@@ -1,6 +1,25 @@
 # HW4 - Staff Role User Stories Implementation
 
-## 📚 **Project Overview**
+## � **Quick Access Links**
+
+### 🎯 **For Graders - Direct Access:**
+- **📍 Unit Test Verification & Repository Access:** [UNIT_TEST_VERIFICATION.md](UNIT_TEST_VERIFICATION.md)
+- **🧪 Unit Tests (140+ tests):** [src/test/java/edu/asu/cse360/hw4/staff/](src/test/java/edu/asu/cse360/hw4/staff/)
+- **💻 Source Code:** [src/main/java/edu/asu/cse360/hw4/staff/](src/main/java/edu/asu/cse360/hw4/staff/)
+- **📋 Setup Instructions:** [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
+
+### 🚀 **Quick Verification Commands:**
+```bash
+# Clone and verify HW4 works as required:
+git clone https://github.com/TheKingJunior17/HW4.git
+cd HW4
+./gradlew clean test --info    # Run 140+ unit tests
+./gradlew runStaffServices     # Demo application
+```
+
+---
+
+## �📚 **Project Overview**
 
 This project implements comprehensive staff role functionality for the CSE 360 educational platform, including authentication, student analytics, question review workflows, grading configuration, and system analytics.
 
