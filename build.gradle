@@ -1,0 +1,117 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'edu.asu.cse360'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    
+    // JUnit 5 for testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.6.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.6.0'
+    
+    // Additional dependencies for real-world functionality
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+}
+
+application {
+    mainModule = 'hw4.staff'
+    mainClass = 'edu.asu.cse360.hw4.staff.StaffApplication'
+}
+
+test {
+    useJUnitPlatform()
+    
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+    
+    // Generate test reports
+    reports {
+        html.required = true
+        junitXml.required = true
+    }
+    
+    // Code coverage
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+    dependsOn test
+    
+    reports {
+        xml.required = true
+        csv.required = true
+        html.required = true
+    }
+    
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/*Test*'])
+        }))
+    }
+}
+
+javadoc {
+    options {
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        author = true
+        version = true
+        use = true
+        windowTitle = "HW4 Staff Role Implementation - API Documentation"
+        docTitle = "HW4 Staff Role Implementation"
+        header = "<b>CSE 360 - HW4</b>"
+        addStringOption('Xdoclint:none', '-quiet')
+    }
+    
+    include '**/edu/asu/cse360/hw4/staff/**'
+}
+
+// Custom task for running all staff role services
+task runStaffServices(type: JavaExec) {
+    group = 'application'
+    description = 'Run all HW4 staff role services'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'edu.asu.cse360.hw4.staff.StaffApplication'
+}
+
+// Custom task for generating complete documentation
+task generateDocs {
+    group = 'documentation'
+    description = 'Generate complete project documentation'
+    dependsOn javadoc, test, jacocoTestReport
+}
+
+// Clean build directories
+clean {
+    delete 'out'
+    delete 'build'
+    delete '.gradle'
+}
